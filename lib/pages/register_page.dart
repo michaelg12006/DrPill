@@ -1,4 +1,5 @@
 
+import 'package:dr_drugs/widgets/medical_painter_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:dr_drugs/utils/colors.dart';
 import 'package:dr_drugs/utils/navigator.dart';
@@ -90,110 +91,127 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            alignment: Alignment.centerLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 60),
-                const Text(
-                  "Daftar",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: secondaryFontColor,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: Stack(
+                children: [
+                  Positioned.fill(child: CustomPaint(painter: MedicalPatternPainter(isSecondary: true))),
+                  
+                  SafeArea(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: const EdgeInsets.all(20.0),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 60),
+                            const Text(
+                              "Daftar",
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: secondaryFontColor,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(30),
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Nama",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: secondaryFontColor,
+                                    ),
+                                  ),
+                                  SecondaryTextInput(
+                                    hintText: "",
+                                    controller: _nameController,
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                  const SizedBox(height: 40),
+                                  const Text(
+                                    "Email",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: secondaryFontColor,
+                                    ),
+                                  ),
+                                  SecondaryTextInput(
+                                    hintText: "",
+                                    controller: _emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                  ),
+                                  const SizedBox(height: 40),
+                                  const Text(
+                                    "Kata Sandi",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: secondaryFontColor,
+                                    ),
+                                  ),
+                                  SecondaryTextInput(
+                                    hintText: "",
+                                    controller: _passwordController,
+                                    keyboardType: TextInputType.text,
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 40),
+                                  const Text(
+                                    "Konfirmasi Kata Sandi",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: secondaryFontColor,
+                                    ),
+                                  ),
+                                  SecondaryTextInput(
+                                    hintText: "",
+                                    controller: _confirmController,
+                                    keyboardType: TextInputType.text,
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 40),
+                                  CustomButton(
+                                    text: _isLoading ? "Memproses..." : "Daftar",
+                                    onTap: _isLoading ? () {} : _handleRegister,
+                                    buttonColor: secondaryButtonColor,
+                                    textColor: secondaryFontColor,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  CustomButton(
+                                    text: "Sudah Punya Akun?",
+                                    onTap: () {
+                                      navigateBack(context);
+                                    },
+                                    buttonColor: tertiaryButtonColor,
+                                    textColor: secondaryFontColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Nama",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: secondaryFontColor,
-                        ),
-                      ),
-                      SecondaryTextInput(
-                        hintText: "",
-                        controller: _nameController,
-                        keyboardType: TextInputType.text,
-                      ),
-                      const SizedBox(height: 40),
-                      const Text(
-                        "Email",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: secondaryFontColor,
-                        ),
-                      ),
-                      SecondaryTextInput(
-                        hintText: "",
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      const SizedBox(height: 40),
-                      const Text(
-                        "Kata Sandi",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: secondaryFontColor,
-                        ),
-                      ),
-                      SecondaryTextInput(
-                        hintText: "",
-                        controller: _passwordController,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 40),
-                      const Text(
-                        "Konfirmasi Kata Sandi",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: secondaryFontColor,
-                        ),
-                      ),
-                      SecondaryTextInput(
-                        hintText: "",
-                        controller: _confirmController,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 40),
-                      CustomButton(
-                        text: _isLoading ? "Memproses..." : "Daftar",
-                        onTap: _isLoading ? () {} : _handleRegister,
-                        buttonColor: secondaryButtonColor,
-                        textColor: secondaryFontColor,
-                      ),
-                      const SizedBox(height: 15),
-                      CustomButton(
-                        text: "Sudah Punya Akun?",
-                        onTap: () {
-                          navigateBack(context);
-                        },
-                        buttonColor: tertiaryButtonColor,
-                        textColor: secondaryFontColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+                ]
+              )
+            )
+          );
+        }
+      )
     );
   }
 }

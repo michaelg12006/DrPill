@@ -3,6 +3,7 @@ import 'package:dr_drugs/utils/colors.dart';
 import 'package:dr_drugs/widgets/custom_clock_wheel.dart';
 import 'package:dr_drugs/widgets/custom_option_selector.dart';
 import 'package:dr_drugs/widgets/frequency_selector.dart';
+import 'package:dr_drugs/widgets/medical_painter_pattern.dart';
 import 'package:dr_drugs/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:dr_drugs/services/medication_service.dart';
@@ -119,7 +120,7 @@ class _InitialPageState extends State<InitialPage> {
       if (!mounted) return;
 
       // 3. Navigate to the main application.
-      navigate(context, const MainPage(), false);
+      navigate(context, const MainPage(), false, isVerticalReveal: true);
 
     } catch (e) {
       if (!mounted) return;
@@ -160,27 +161,42 @@ class _InitialPageState extends State<InitialPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView(
-                controller: pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  pageOne(),
-                  pageTwo(),
-                  pageThree(),
-                ],
-              ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
             ),
+            child: Stack(
+              children: [
+                Positioned.fill(child: CustomPaint(painter: MedicalPatternPainter(isSecondary: true))),
+                
+                SafeArea(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: PageView(
+                          controller: pageController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            pageOne(),
+                            pageTwo(),
+                            pageThree(),
+                          ],
+                        ),
+                      ),
 
-            buildPageButtons(),
+                      buildPageButtons(),
 
-            const SizedBox(height: 68),
-          ],
-        ),
-      ),
+                      const SizedBox(height: 68),
+                    ],
+                  ),
+                ),
+              ]
+            )
+          );
+        }
+      )
     );
   }
 
@@ -504,7 +520,10 @@ class _InitialPageState extends State<InitialPage> {
                   if (clockCount == 0)
                     const Text(
                       'Obat diminum hanya sesuai kebutuhan.',
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: secondaryFontColor
+                      ),
                     ),
 
                   ...List.generate(clockCount, (index) {

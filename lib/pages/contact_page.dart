@@ -1,5 +1,6 @@
 
 // import 'package:dr_drugs/widgets/contact_card.dart';
+import 'package:dr_drugs/widgets/unavailable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:dr_drugs/utils/colors.dart';
 
@@ -38,12 +39,16 @@ class _ContactPageState extends State<ContactPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Belum ada kontak"),
+                      // Text("Belum ada kontak"),
                       // ContactCard(
                       //   name: 'Ayah',
                       //   message: 'Preview Pesan.....',
                       //   time: '07.35 AM',
                       // ),
+                      UnavailableCard(
+                        name: "Belum Ada Dokter", 
+                        message: "Tidak ada dokter yang dapat dihubungi karena belum terhubung dengan rumah sakit."
+                      )
                     ],
                   ),
                 ),

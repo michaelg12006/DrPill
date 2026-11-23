@@ -1,4 +1,3 @@
-
 import 'package:dr_drugs/utils/colors.dart';
 import 'package:dr_drugs/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,19 @@ class MedicationCard extends StatelessWidget {
     required this.onToggle,
     this.isUpdating = false,
   });
+
+  // CHANGE NEEDED: icon change accordingly
+  IconData getIcon() {
+    if (medication.instruction.contains('Pil / Tablet')) {
+      return Icons.medication;
+    } else if (medication.instruction.contains('Kapsul')) {
+      return Icons.medication;
+    } else if (medication.instruction.contains('Sirup / Cair')) {
+      return Icons.water_drop_outlined;
+    } else {
+      return Icons.medication;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +49,16 @@ class MedicationCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.medication_outlined,
-                size: 32,
+              Container(
+                height: 80,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: iconBackgroundGreen,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Icon(getIcon(), color: primaryDarkColor, size: 32),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,12 +68,19 @@ class MedicationCard extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
+                        color: primaryDarkColor
                       ),
                     ),
                     Text(
                       '${medication.dosage} • '
-                      '${medication.instruction} • '
                       '${medication.time}',
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: primaryColor),
+                    ),
+                    Divider(
+                      color: primaryDarkColor.withOpacity(0.5),
+                    ),
+                    Text(
+                      medication.instruction,
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
@@ -69,8 +93,8 @@ class MedicationCard extends StatelessWidget {
             text: isUpdating
                 ? 'Memproses...'
                 : medication.isTaken
-                    ? 'Sudah Diminum'
-                    : 'Tandai Sudah Diminum',
+                ? 'Sudah Diminum'
+                : 'Tandai Sudah Diminum',
             onTap: isUpdating ? () {} : onToggle,
             buttonColor: medication.isTaken
                 ? disabledButtonColor

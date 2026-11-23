@@ -24,13 +24,8 @@ class MedicationScrollable extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Jadwal Minum Obat Hari Ini',
-          style: TextStyle(fontSize: 20),
-        ),
-        const SizedBox(height: 12),
         SizedBox(
-          height: 356,
+          height: 375,
           child: Stack(
             children: [
               ListView.builder(

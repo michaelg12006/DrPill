@@ -1,5 +1,6 @@
 
 import 'package:dr_drugs/pages/main_page.dart';
+import 'package:dr_drugs/widgets/medical_painter_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:dr_drugs/utils/colors.dart';
 import 'package:dr_drugs/utils/navigator.dart';
@@ -52,9 +53,9 @@ class _LoginPageState extends State<LoginPage> {
           metadata['onboarding_completed'] == true;
 
       if (onboardingCompleted) {
-        navigate(context, const MainPage(), false);
+        navigate(context, const MainPage(), false, isVerticalReveal: true);
       } else {
-        navigate(context, const InitialPage(), false);
+        navigate(context, const InitialPage(), false, isFadeTransition: true);
       }
 
     } catch (e) {
@@ -82,83 +83,100 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( // )))}))}
       backgroundColor: primaryColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            alignment: Alignment.centerLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 60),
-                const Text(
-                  "Masuk",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: secondaryFontColor,
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Email",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: secondaryFontColor,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: Stack(
+                children: [
+                  Positioned.fill(child: CustomPaint(painter: MedicalPatternPainter(isSecondary: true))),
+                  
+                  SafeArea(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: const EdgeInsets.all(20.0),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 60),
+                            const Text(
+                              "Masuk",
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: secondaryFontColor,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(30),
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Email",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: secondaryFontColor,
+                                    ),
+                                  ),
+                                  SecondaryTextInput(
+                                    hintText: "",
+                                    controller: _emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                  ),
+                                  const SizedBox(height: 40),
+                                  const Text(
+                                    "Kata Sandi",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: secondaryFontColor,
+                                    ),
+                                  ),
+                                  SecondaryTextInput(
+                                    hintText: "",
+                                    controller: _passwordController,
+                                    keyboardType: TextInputType.text,
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 40),
+                                  CustomButton(
+                                    text: _isLoading ? "Memproses..." : "Masuk",
+                                    onTap: _isLoading ? () {} : _handleLogin,
+                                    buttonColor: secondaryButtonColor,
+                                    textColor: secondaryFontColor,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  CustomButton(
+                                    text: "Buat Akun",
+                                    onTap: () {
+                                      navigate(context, const RegisterPage(), true, isFadeTransition: true);
+                                    },
+                                    buttonColor: tertiaryButtonColor,
+                                    textColor: secondaryFontColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SecondaryTextInput(
-                        hintText: "",
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      const SizedBox(height: 40),
-                      const Text(
-                        "Kata Sandi",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: secondaryFontColor,
-                        ),
-                      ),
-                      SecondaryTextInput(
-                        hintText: "",
-                        controller: _passwordController,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 40),
-                      CustomButton(
-                        text: _isLoading ? "Memproses..." : "Masuk",
-                        onTap: _isLoading ? () {} : _handleLogin,
-                        buttonColor: secondaryButtonColor,
-                        textColor: secondaryFontColor,
-                      ),
-                      const SizedBox(height: 15),
-                      CustomButton(
-                        text: "Buat Akun",
-                        onTap: () {
-                          navigate(context, const RegisterPage(), true);
-                        },
-                        buttonColor: tertiaryButtonColor,
-                        textColor: secondaryFontColor,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+                ]
+              )
+            )
+          );
+        }
+      )
     );
   }
 }

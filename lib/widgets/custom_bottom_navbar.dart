@@ -28,47 +28,76 @@ class CustomBottomNavBar extends StatelessWidget {
     return Container(
       height: 68,
       color: primaryColor,
-      child: Row(
-        children: List.generate(3, (index) {
-          final isSelected = currentIndex == index;
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final itemWidth = constraints.maxWidth / 3;
 
-          return Expanded(
-            child: GestureDetector(
-              onTap: () => onTap(index),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 4,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? secondaryButtonColor
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      icons[index],
-                      color: secondaryColor,
-                      size: 28,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      labels[index],
-                      style: const TextStyle(
-                        color: secondaryColor,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+          return Stack(
+            children: [
+              // Animated selection indicator
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 350),
+                curve: Curves.easeInOutCubic,
+                left: itemWidth * currentIndex + 4,
+                top: 5,
+                bottom: 5,
+                width: itemWidth - 8,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: secondaryButtonColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
-            ),
+
+              Row(
+                children: List.generate(3, (index) {
+                  final isSelected = currentIndex == index;
+
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => onTap(index),
+                      behavior: HitTestBehavior.opaque,
+                      child: SizedBox(
+                        height: 68,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedScale(
+                              scale: isSelected ? 1.12 : 1.0,
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.easeOutBack,
+                              child: Icon(
+                                icons[index],
+                                color: secondaryColor,
+                                size: 28,
+                              ),
+                            ),
+
+                            const SizedBox(height: 3),
+
+                            AnimatedDefaultTextStyle(
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.easeInOut,
+                              style: TextStyle(
+                                color: secondaryColor,
+                                fontSize: 14,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                              child: Text(labels[index]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ],
           );
-        }),
+        },
       ),
     );
   }
