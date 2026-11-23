@@ -1,4 +1,4 @@
-name: dr_pill
+name: dr_drugs
 description: "A new Flutter project."
 publish_to: 'none'
 version: 0.1.0
@@ -24,3 +24,4 @@ flutter:
     - assets/images/logo.png
     - assets/images/logo_notext.png
     - assets/images/logo_textbelow.png
+
