@@ -6,7 +6,7 @@ To run this project locally, follow these steps:
 
 ### 1. Start the Backend
 Open command prompt in the root project directory and run the following commands:
-```bash
+```powershell
 cd backend
 npm install
 npm start
@@ -14,7 +14,7 @@ npm start
 
 ### 2. Run the Flutter Application
 In a separate command prompt in the root project directory, run the following commands:
-```bash
+```powershell
 flutter pub get
 flutter run
 ```
